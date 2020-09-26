@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import Connect from './connect/Connect';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  state = {
+    token: ''
+  }
+
+  checkLoggedIn = () => {
+    // check to see if we have a saved auth token which will determine which component is displayed
+    const nanoleafz = JSON.parse(localStorage.getItem("nanoleafz" || "{}"))
+    if (!nanoleafz) {
+      return
+    } else {
+      this.setState({token: nanoleafz.token})
+    }
+  }
+
+  componentDidMount() {
+    this.checkLoggedIn()
+  }
+
+  render() {
+    return (
+      <>
+      {
+        this.state.token ? null : <Connect />
+      }
+        
+      </>
+    );
+  }
 }
 
 export default App;
